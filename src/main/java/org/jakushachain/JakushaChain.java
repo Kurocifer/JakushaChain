@@ -3,30 +3,33 @@ package org.jakushachain;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.security.Security;
 import java.util.ArrayList;
 
 public class JakushaChain {
 
-    public static ArrayList<Block> blockchain = new ArrayList<>();
-    public static final int difficulty = 5;
+    public static ArrayList<Block> blockchain = new ArrayList<Block>();
+    public static int difficulty = 5;
+    public static Wallet walletA;
+    public static Wallet walletB;
 
     public static void main(String[] args) {
-        blockchain.add(new Block("Soy el primer bloque", "0" ));
-        System.out.println("Trying to Mine block 1...");
-        blockchain.getFirst().mineBlock(difficulty);
+        // Setup Bouncey castle as a security provider
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
-        blockchain.add(new Block("Segundo bloque list", blockchain.getLast().getHash()));
-        System.out.println("Trying to Mine block 2...");
-        blockchain.get(1).mineBlock(difficulty);
+        walletA = new Wallet();
+        walletB = new Wallet();
 
-        blockchain.add(new Block("Oye, soy el terver bloque", blockchain.getLast().getHash()));
-        System.out.println("Trying to Mine block 3...");
-        blockchain.get(2).mineBlock(difficulty);
+        System.out.println("Private and public keys:");
+        System.out.println(StringUtil.getStringFromKey(walletA.getPrivateKey()));
+        System.out.println(StringUtil.getStringFromKey(walletA.getPublicKey()));
 
-        System.out.println("\nBlockchain is valid: " + isChainValid());
+        Transaction transaction = new Transaction(walletA.getPublicKey(), walletB.getPublicKey(), 5, null);
+        transaction.generateSignature(walletA.getPrivateKey());
 
-        String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
-        System.out.println(blockchainJson);
+        System.out.println("Is signature verified");
+        System.out.println(transaction.verifySignature());
+
     }
 
     public static boolean isChainValid() {
