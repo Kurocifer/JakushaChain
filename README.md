@@ -1,2 +1,3 @@
 # JakushaChain
-A simple proof of concept implmentation of a Blockchain
+
+A simple proof of concept implmentation of a Blockchain.
