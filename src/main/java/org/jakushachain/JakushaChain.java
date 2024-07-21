@@ -5,13 +5,17 @@ import com.google.gson.GsonBuilder;
 
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class JakushaChain {
 
     public static ArrayList<Block> blockchain = new ArrayList<Block>();
+    public static HashMap<String, TransactionOutput> UTXOs = new HashMap<>();
     public static int difficulty = 5;
     public static Wallet walletA;
     public static Wallet walletB;
+    public static float minimumTransaction = 0.1f;
+
 
     public static void main(String[] args) {
         // Setup Bouncey castle as a security provider
