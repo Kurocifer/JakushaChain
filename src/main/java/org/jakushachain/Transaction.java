@@ -2,7 +2,6 @@ package org.jakushachain;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Signature;
 import java.util.ArrayList;
 
 public class Transaction {
@@ -58,12 +57,12 @@ public class Transaction {
             i.setUTXO(JakushaChain.UTXOs.get(i.getTransactionOutputId()));
         }
 
-        if(getInputValue() < JakushaChain.minimumTransaction) {
-            System.out.println("Transaction Inputs to small: " + getInputValue());
+        if(getInputsValue() < JakushaChain.minimumTransaction) {
+            System.out.println("Transaction Inputs to small: " + getInputsValue());
             return false;
         }
 
-        float leftOver = getInputValue() - value;
+        float leftOver = getInputsValue() - value;
         transactionId = calculateHash();
         outputs.add(new TransactionOutput(this.recipient, value, transactionId));
         outputs.add(new TransactionOutput(this.sender, leftOver, transactionId));
@@ -80,7 +79,7 @@ public class Transaction {
         return true;
     }
 
-    public float getInputValue() {
+    public float getInputsValue() {
         float total = 0;
 
         for(TransactionInput i : inputs) {
@@ -102,5 +101,16 @@ public class Transaction {
 
     public String getTransactionId() {
         return transactionId;
+    }
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public PublicKey getRecipient() {
+        return this.recipient;
+    }
+
+    public PublicKey getSender() {
+        return sender;
     }
 }

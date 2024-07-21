@@ -30,4 +30,8 @@ public class TransactionOutput {
     public String getId() {
         return id;
     }
+
+    public PublicKey getRecipient() {
+        return recipient;
+    }
 }
